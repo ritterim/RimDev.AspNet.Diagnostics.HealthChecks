@@ -16,7 +16,4 @@
       <dependency id="Microsoft.Owin" version="3.1.0" />
     </dependencies>
   </metadata>
-  <!-- <files>
-    <file src="bin\$configuration$\$id$.dll" target="lib\net462" />
-  </files> -->
 </package>
