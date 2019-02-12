@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <title>$id$</title>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <description>$description$</description>
+    <projectUrl>https://github.com/ritterim/RimDev.AspNet.Diagnostics.HealthChecks</projectUrl>
+    <license type="expression">MIT</license>
+    <tags>diagnostics healthchecks</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <dependencies>
+      <dependency id="Microsoft.Extensions.Diagnostics.HealthChecks" version="2.2.0" />
+      <dependency id="Microsoft.Extensions.Logging" version="2.2.0" />
+      <dependency id="Microsoft.Owin" version="3.1.0" />
+    </dependencies>
+  </metadata>
+  <!-- <files>
+    <file src="bin\$configuration$\$id$.dll" target="lib\net462" />
+  </files> -->
+</package>

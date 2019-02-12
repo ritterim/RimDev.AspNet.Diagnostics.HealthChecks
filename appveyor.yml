@@ -1,0 +1,21 @@
+image: Visual Studio 2017
+
+cache:
+  - packages -> **\packages.config
+
+build_script:
+  - ps: ./build.cmd
+
+test: off
+
+skip_tags: true
+
+artifacts:
+  - path: ./msbuild.log
+  - path: ./artifacts/*.nupkg
+
+deploy:
+  - provider: Environment
+    name: NuGet
+    on:
+      branch: master
