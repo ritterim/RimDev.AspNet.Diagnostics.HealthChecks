@@ -84,7 +84,8 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
         {
             UseHealthChecks(app, url, new HealthCheckOptions(), healthChecks.ToArray());
         }
-      public static void UseHealthChecks(
+
+        public static void UseHealthChecks(
             this IAppBuilder app,
             string url,
             params HealthCheckWrapper[] healthChecks)
