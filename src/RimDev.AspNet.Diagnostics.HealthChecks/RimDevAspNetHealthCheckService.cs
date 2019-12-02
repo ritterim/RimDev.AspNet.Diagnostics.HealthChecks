@@ -27,7 +27,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
 
         public async Task<HealthReport> CheckHealthAsync(
             // Func<HealthCheckRegistration, bool> predicate,
-            IEnumerable<IHealthCheck> healthChecks,
+            IEnumerable<HealthCheckWrapper> healthChecks,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var entries = new Dictionary<string, HealthReportEntry>(StringComparer.OrdinalIgnoreCase);
@@ -35,7 +35,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
             var totalTime = Stopwatch.StartNew();
             Log.HealthCheckProcessingBegin(_logger);
 
-            foreach (var healthCheck in healthChecks)
+            foreach (var wrapper in healthChecks)
             {
                 /*
                 if (predicate != null && !predicate(registration))
@@ -48,11 +48,11 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
 
                 // If the health check does things like make Database queries using EF or backend HTTP calls,
                 // it may be valuable to know that logs it generates are part of a health check. So we start a scope.
-                using (_logger.BeginScope(new HealthCheckLogScope(healthCheck.GetType().Name)))
+                using (_logger.BeginScope(new HealthCheckLogScope(wrapper.GetType().Name)))
                 {
                     var stopwatch = Stopwatch.StartNew();
 
-                    Log.HealthCheckBegin(_logger, healthCheck);
+                    Log.HealthCheckBegin(_logger, wrapper.HealthCheck);
 
                     HealthReportEntry entry;
                     try
@@ -60,13 +60,13 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                         var context = new HealthCheckContext
                         {
                             Registration = new HealthCheckRegistration(
-                                healthCheck.GetType().Name,
-                                healthCheck,
+                                wrapper.Name,
+                                wrapper.HealthCheck,
                                 null,
                                 Enumerable.Empty<string>())
                         };
 
-                        var result = await healthCheck.CheckHealthAsync(context, cancellationToken);
+                        var result = await wrapper.HealthCheck.CheckHealthAsync(context, cancellationToken);
                         var duration = stopwatch.Elapsed;
 
                         entry = new HealthReportEntry(
@@ -76,8 +76,8 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                             exception: result.Exception,
                             data: result.Data);
 
-                        Log.HealthCheckEnd(_logger, healthCheck, entry, duration);
-                        Log.HealthCheckData(_logger, healthCheck, entry);
+                        Log.HealthCheckEnd(_logger, wrapper.HealthCheck, entry, duration);
+                        Log.HealthCheckData(_logger, wrapper.HealthCheck, entry);
                     }
 
                     // Allow cancellation to propagate.
@@ -91,10 +91,10 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                             exception: ex,
                             data: null);
 
-                        Log.HealthCheckError(_logger, healthCheck, ex, duration);
+                        Log.HealthCheckError(_logger, wrapper.HealthCheck, ex, duration);
                     }
 
-                    entries[healthCheck.GetType().Name] = entry;
+                    entries[wrapper.Name] = entry;
                 }
             }
 
