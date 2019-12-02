@@ -21,12 +21,11 @@ namespace MvcSample
                 //    "select 'a'"),
                 new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)));
 
-            /* Sample with named checks
+            // Sample with named checks
             app.UseHealthChecks(
-                "/_health",
+                "/_health_named",
                 new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
                 new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost"));
-            */
         }
     }
 
