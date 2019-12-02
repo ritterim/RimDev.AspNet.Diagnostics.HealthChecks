@@ -20,6 +20,12 @@ namespace MvcSample
                 //    @"Data Source=(LocalDB)\v13.0;Integrated Security=True;Initial Catalog=master",
                 //    "select 'a'"),
                 new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)));
+
+            // Sample with named checks
+            app.UseHealthChecks(
+                "/_health_named",
+                new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
+                new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost"));
         }
     }
 
