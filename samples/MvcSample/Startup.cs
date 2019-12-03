@@ -1,10 +1,10 @@
 ﻿using HealthChecks.Network;
-using HealthChecks.SqlServer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Owin;
 using RimDev.AspNet.Diagnostics.HealthChecks;
 using System.Threading;
 using System.Threading.Tasks;
+using RimDev.AspNet.Diagnostics.HealthChecks.UI;
 
 namespace MvcSample
 {
@@ -21,10 +21,15 @@ namespace MvcSample
                 //    "select 'a'"),
                 new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)));
 
-            // Sample with named checks
+            // Sample with named checks for Health Check UI project
             app.UseHealthChecks(
-                "/_health_named",
+                "/_health_ui",
+                new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                },
                 new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
+                new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
                 new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost"));
         }
     }
@@ -48,6 +53,16 @@ namespace MvcSample
             await Task.Delay(1000);
 
             return new HealthCheckResult(HealthStatus.Healthy);
+        }
+    }
+
+    public class FailingHealthCheck : IHealthCheck
+    {
+        public Task<HealthCheckResult> CheckHealthAsync(
+            HealthCheckContext context,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Task.FromResult(new HealthCheckResult(HealthStatus.Unhealthy, "This one is supposed to fail."));
         }
     }
 }
