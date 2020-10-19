@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Owin;
+using RimDev.AspNet.Diagnostics.HealthChecks.UI;
 
 namespace RimDev.AspNet.Diagnostics.HealthChecks
 {
@@ -18,6 +19,10 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
     /// </summary>
     public class HealthCheckOptions
     {
+        public HealthCheckOptions(string role = null)
+        {
+            UIResponseWriter.Role = role;
+        }
         /*
         /// <summary>
         /// Gets or sets a predicate that is used to filter the set of health checks executed.
