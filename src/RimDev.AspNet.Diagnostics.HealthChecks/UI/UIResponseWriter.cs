@@ -15,14 +15,14 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.UI
     {
         const string DEFAULT_CONTENT_TYPE = "application/json";
 
-        public static Task WriteHealthCheckUIResponse(IOwinContext httpContext, HealthReport report) => WriteHealthCheckUIResponse(httpContext, report, null, null);
+        public static Task WriteHealthCheckUIResponse(IOwinContext httpContext, HealthReport report) => WriteHealthCheckUIResponse(httpContext, report, null);
         public static Task WriteHealthCheckUIResponse(IOwinContext httpContext, HealthReport report, string role) => WriteHealthCheckUIResponse(httpContext, report, null, null);
 
         public static Task WriteHealthCheckUIResponse(IOwinContext httpContext, HealthReport report, Action<JsonSerializerSettings> jsonConfigurator, string role)
         {
             if (!string.IsNullOrEmpty(role) && !httpContext.Authentication.User.IsInRole(role))
             {
-                return httpContext.Response.WriteAsync("You are not authorized!");
+                return httpContext.Response.WriteAsync($"You are not authorized for this {role}!");
             }
             var response = "{}";
 
