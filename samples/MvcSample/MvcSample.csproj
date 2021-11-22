@@ -51,6 +51,9 @@
     <Reference Include="HealthChecks.SqlServer, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AspNetCore.HealthChecks.SqlServer.2.2.0\lib\netstandard2.0\HealthChecks.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="HealthChecks.Uris, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AspNetCore.HealthChecks.Uris.2.2.0\lib\netstandard2.0\HealthChecks.Uris.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.Configuration.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
