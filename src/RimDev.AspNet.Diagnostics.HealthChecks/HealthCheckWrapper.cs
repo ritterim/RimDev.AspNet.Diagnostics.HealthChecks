@@ -4,7 +4,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
 {
     public class HealthCheckWrapper
     {
-        public HealthCheckWrapper(IHealthCheck healthCheck, string name = null)
+        public HealthCheckWrapper(IHealthCheck healthCheck, string name = null, HealthStatus? failureStatus = null)
         {
             HealthCheck = healthCheck;
             
@@ -12,8 +12,10 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                 name = healthCheck.GetType().Name;
 
             Name = name;
+            FailureStatus = failureStatus;
         }
         public IHealthCheck HealthCheck { get; }
         public string Name { get; }
+        public HealthStatus? FailureStatus { get; }
     }
 }

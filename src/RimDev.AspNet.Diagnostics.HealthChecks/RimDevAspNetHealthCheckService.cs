@@ -62,7 +62,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                             Registration = new HealthCheckRegistration(
                                 wrapper.Name,
                                 wrapper.HealthCheck,
-                                null,
+                                wrapper.FailureStatus,
                                 Enumerable.Empty<string>())
                         };
 

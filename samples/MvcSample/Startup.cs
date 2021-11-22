@@ -5,6 +5,8 @@ using RimDev.AspNet.Diagnostics.HealthChecks;
 using System.Threading;
 using System.Threading.Tasks;
 using RimDev.AspNet.Diagnostics.HealthChecks.UI;
+using HealthChecks.Uris;
+using System;
 
 namespace MvcSample
 {
@@ -30,7 +32,10 @@ namespace MvcSample
                 },
                 new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
                 new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
+                new HealthCheckWrapper(new UriHealthCheck(GetOptions()), "Bad uri check (show as degraded)", failureStatus: HealthStatus.Degraded),
                 new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost"));
+
+            UriHealthCheckOptions GetOptions() => new UriHealthCheckOptions().AddUri(new Uri("http://xthis.xwont.workx"));
         }
     }
 
