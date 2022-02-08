@@ -11,8 +11,8 @@
     <tags>diagnostics healthchecks</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="Microsoft.Extensions.Diagnostics.HealthChecks" version="2.2.0" />
-      <dependency id="Microsoft.Extensions.Logging" version="2.2.0" />
+      <dependency id="Microsoft.Extensions.Diagnostics.HealthChecks" version="3.1.22" />
+      <dependency id="Microsoft.Extensions.Logging" version="3.1.22" />
       <dependency id="Microsoft.Owin" version="3.1.0" />
       <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
