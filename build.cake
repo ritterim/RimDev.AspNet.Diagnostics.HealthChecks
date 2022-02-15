@@ -37,7 +37,9 @@ Task("Publish")
             Properties = new Dictionary<string, string>
             {
                 { "Configuration", configuration }
-            }
+            },
+            Symbols = true,
+            SymbolPackageFormat = "snupkg"
         });
     });
 
