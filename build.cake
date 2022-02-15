@@ -22,7 +22,7 @@ Task("Build")
     {
         MSBuild(solution, settings =>
             settings.SetConfiguration(configuration)
-                .WithProperty("TreatWarningsAsErrors", "False")
+                .WithProperty("TreatWarningsAsErrors", "True")
                 .SetVerbosity(Verbosity.Minimal)
                 .AddFileLogger());
     });
