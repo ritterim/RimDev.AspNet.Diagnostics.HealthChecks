@@ -22,7 +22,7 @@ Task("Build")
     {
         MSBuild(solution, settings =>
             settings.SetConfiguration(configuration)
-                .WithProperty("TreatWarningsAsErrors", "False")
+                .WithProperty("TreatWarningsAsErrors", "True")
                 .SetVerbosity(Verbosity.Minimal)
                 .AddFileLogger());
     });
@@ -37,7 +37,9 @@ Task("Publish")
             Properties = new Dictionary<string, string>
             {
                 { "Configuration", configuration }
-            }
+            },
+            Symbols = true,
+            SymbolPackageFormat = "snupkg"
         });
     });
 
