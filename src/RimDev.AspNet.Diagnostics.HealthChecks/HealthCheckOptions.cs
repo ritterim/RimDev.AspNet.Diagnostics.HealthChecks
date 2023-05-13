@@ -7,9 +7,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Web;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Owin;
 
 namespace RimDev.AspNet.Diagnostics.HealthChecks
 {
@@ -76,7 +75,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
         /// The default value is a delegate that will write a minimal <c>text/plain</c> response with the value
         /// of <see cref="HealthReport.Status"/> as a string.
         /// </remarks>
-        public Func<IOwinContext, HealthReport, Task> ResponseWriter { get; set; } = HealthCheckResponseWriters.WriteMinimalPlaintext;
+        public Action<HttpContext, HealthReport> ResponseWriter { get; set; } = HealthCheckResponseWriters.WriteMinimalPlaintext;
 
         /// <summary>
         /// Gets or sets a value that controls whether responses from the health check middleware can be cached.

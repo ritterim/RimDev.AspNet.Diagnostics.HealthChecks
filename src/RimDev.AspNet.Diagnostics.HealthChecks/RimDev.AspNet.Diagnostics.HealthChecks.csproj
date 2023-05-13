@@ -50,11 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HealthCheckLogScope.cs" />
-    <Compile Include="HealthCheckMiddleware.cs" />
     <Compile Include="HealthCheckOptions.cs" />
     <Compile Include="HealthCheckResponseWriters.cs" />
     <Compile Include="HealthCheckWrapper.cs" />
-    <Compile Include="IAppBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RimDevAspNetHealthCheckService.cs" />
     <Compile Include="UI\UIHealthReport.cs" />
@@ -71,14 +69,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging">
       <Version>3.1.20</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Owin.Host.SystemWeb">
-      <Version>4.2.2</Version>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Memory">
-      <Version>4.5.4</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

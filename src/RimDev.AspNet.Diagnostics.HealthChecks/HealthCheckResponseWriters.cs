@@ -4,18 +4,17 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading.Tasks;
+using System.Web;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Owin;
 
 namespace RimDev.AspNet.Diagnostics.HealthChecks
 {
     internal static class HealthCheckResponseWriters
     {
-        public static Task WriteMinimalPlaintext(IOwinContext owinContext, HealthReport result)
+        public static void WriteMinimalPlaintext(HttpContext httpContext, HealthReport result)
         {
-            owinContext.Response.ContentType = "text/plain";
-            return owinContext.Response.WriteAsync(result.Status.ToString());
+            httpContext.Response.ContentType = "text/plain";
+            httpContext.Response.Write(result.Status.ToString());
         }
     }
 }

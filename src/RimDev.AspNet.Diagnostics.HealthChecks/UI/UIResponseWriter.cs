@@ -2,9 +2,8 @@
 // Originally licensed under the Apache License, Version 2.0, https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/blob/2.2.0-upgrade-ui-client-2.2.3/LICENSE
 
 using System;
-using System.Threading.Tasks;
+using System.Web;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Owin;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -15,9 +14,9 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.UI
     {
         const string DEFAULT_CONTENT_TYPE = "application/json";
 
-        public static Task WriteHealthCheckUIResponse(IOwinContext httpContext, HealthReport report) => WriteHealthCheckUIResponse(httpContext, report, null);
+        public static void WriteHealthCheckUIResponse(HttpContext httpContext, HealthReport report) => WriteHealthCheckUIResponse(httpContext, report, null);
 
-        public static Task WriteHealthCheckUIResponse(IOwinContext httpContext, HealthReport report, Action<JsonSerializerSettings> jsonConfigurator)
+        public static void WriteHealthCheckUIResponse(HttpContext httpContext, HealthReport report, Action<JsonSerializerSettings> jsonConfigurator)
         {
             var response = "{}";
 
@@ -48,7 +47,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.UI
                 response = JsonConvert.SerializeObject(uiReport, settings);
             }
 
-            return httpContext.Response.WriteAsync(response);
+            httpContext.Response.Write(response);
         }
     }
 }
