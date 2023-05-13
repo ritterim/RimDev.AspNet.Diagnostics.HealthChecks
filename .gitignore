@@ -193,3 +193,4 @@ FakesAssemblies/
 # JetBrains
 .idea/
 
+/MigrationBackup
