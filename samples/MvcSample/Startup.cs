@@ -31,6 +31,12 @@ namespace MvcSample
             //     new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
             //     new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
             //     new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost"));
+
+            LegacyHealthCheckConfiguration.Current.UseHealthChecks(
+                new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
+                new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
+                new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost")
+            );
         }
     }
 
