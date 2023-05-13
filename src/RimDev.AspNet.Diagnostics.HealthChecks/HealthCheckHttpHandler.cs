@@ -3,17 +3,18 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace RimDev.AspNet.Diagnostics.HealthChecks
 {
-    public class HealthCheckHttpHandler : IHttpHandler // IHttpAsyncHandler?
+    public class HealthCheckHttpHandler : HttpTaskAsyncHandler
     {
         private readonly HealthCheckOptions _healthCheckOptions;
         private readonly RimDevAspNetHealthCheckService _healthCheckService;
         private readonly HealthCheckWrapper[] _healthChecks;
 
-        public bool IsReusable => false;
+        public override bool IsReusable => false;
 
         public HealthCheckHttpHandler()
         {
@@ -27,16 +28,15 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
             _healthChecks = config.HealthChecks;
         }
 
-        public void ProcessRequest(HttpContext httpContext)
+        public override async Task ProcessRequestAsync(HttpContext httpContext)
         {
             if (httpContext == null)
             {
                 throw new ArgumentNullException(nameof(httpContext));
             }
 
-            // TODO: Sync over async [!!!]
             // Get results
-            var result = _healthCheckService.CheckHealthAsync(_healthChecks).Result; // No way to pass a CancellationToken, e.g. httpContext.Request.CallCancelled
+            var result = await _healthCheckService.CheckHealthAsync(_healthChecks);
 
             // Map status to response code - this is customizable via options. 
             if (!_healthCheckOptions.ResultStatusCodes.TryGetValue(result.Status, out var statusCode))
