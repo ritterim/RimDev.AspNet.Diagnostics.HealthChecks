@@ -19,7 +19,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
         {
             var loggerFactory = new LoggerFactory();
             var logger = loggerFactory.CreateLogger(nameof(HealthCheckHttpHandler));
-            ;
+
             _healthCheckService = new RimDevAspNetHealthCheckService(logger);
         }
 
