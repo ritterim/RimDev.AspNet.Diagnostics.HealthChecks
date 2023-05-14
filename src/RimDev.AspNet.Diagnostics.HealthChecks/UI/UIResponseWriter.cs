@@ -16,7 +16,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.UI
 
         public static void WriteHealthCheckUIResponse(HttpContext httpContext, HealthReport report) => WriteHealthCheckUIResponse(httpContext, report, null);
 
-        public static void WriteHealthCheckUIResponse(HttpContext httpContext, HealthReport report, Action<JsonSerializerSettings> jsonConfigurator)
+        public static void WriteHealthCheckUIResponse(HttpContext httpContext, HealthReport report, Action<JsonSerializerSettings>? jsonConfigurator)
         {
             var response = "{}";
 

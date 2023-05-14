@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using RimDev.AspNet.Diagnostics.HealthChecks.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,17 +33,19 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
             // Resolve the health check configuration
             var route = httpContext.Request.Url.LocalPath;
 
-            var config = LegacyHealthCheckConfiguration.TryGetForRoute(route);
+            var config = LegacyHealthCheckRoutes.TryGetConfiguration(route);
 
             if (config == null)
             {
-                throw new ApplicationException($"No {nameof(HealthCheckConfiguration)} found for health check route '{route}'!");
+                throw new ApplicationException($"No {nameof(LegacyHealthCheckRouteConfiguration)} found for health check route '{route}'!");
             }
 
             var healthCheckOptions = config.Options;
 
             // Collect health checks
-            var healthChecks = config.CollectHealthChecks?.Invoke() ?? config.HealthChecks;
+            var healthChecks = config.CollectedHealthChecks
+                .SelectMany(factory => factory())
+                .ToList();
 
             // Get results
             var result = await _healthCheckService.CheckHealthAsync(healthChecks);
