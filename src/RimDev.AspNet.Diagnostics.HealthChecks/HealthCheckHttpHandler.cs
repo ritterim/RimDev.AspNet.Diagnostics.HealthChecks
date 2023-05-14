@@ -10,9 +10,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
 {
     public class HealthCheckHttpHandler : HttpTaskAsyncHandler
     {
-        private readonly HealthCheckOptions _healthCheckOptions;
         private readonly RimDevAspNetHealthCheckService _healthCheckService;
-        private readonly HealthCheckWrapper[] _healthChecks;
 
         public override bool IsReusable => false;
 
@@ -20,12 +18,8 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
         {
             var loggerFactory = new LoggerFactory();
             var logger = loggerFactory.CreateLogger(nameof(HealthCheckHttpHandler));
-
-            var config = LegacyHealthCheckConfiguration.Current;
-
-            _healthCheckOptions = config.HealthCheckOptions;
+            ;
             _healthCheckService = new RimDevAspNetHealthCheckService(logger);
-            _healthChecks = config.HealthChecks;
         }
 
         public override async Task ProcessRequestAsync(HttpContext httpContext)
@@ -35,11 +29,26 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                 throw new ArgumentNullException(nameof(httpContext));
             }
 
+            // Resolve the health check configuration
+            var route = httpContext.Request.Url.LocalPath;
+
+            var config = LegacyHealthCheckConfiguration.TryGetForRoute(route);
+
+            if (config == null)
+            {
+                throw new ApplicationException($"No {nameof(HealthCheckConfiguration)} found for health check route '{route}'!");
+            }
+
+            var healthCheckOptions = config.Options;
+
+            // Collect health checks
+            var healthChecks = config.CollectHealthChecks?.Invoke() ?? config.HealthChecks;
+
             // Get results
-            var result = await _healthCheckService.CheckHealthAsync(_healthChecks);
+            var result = await _healthCheckService.CheckHealthAsync(healthChecks);
 
             // Map status to response code - this is customizable via options. 
-            if (!_healthCheckOptions.ResultStatusCodes.TryGetValue(result.Status, out var statusCode))
+            if (!healthCheckOptions.ResultStatusCodes.TryGetValue(result.Status, out var statusCode))
             {
                 var message =
                     $"No status code mapping found for {nameof(HealthStatus)} value: {result.Status}." +
@@ -50,7 +59,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
             }
             httpContext.Response.StatusCode = statusCode;
 
-            if (!_healthCheckOptions.AllowCachingResponses)
+            if (!healthCheckOptions.AllowCachingResponses)
             {
                 // Similar to: https://github.com/aspnet/Security/blob/7b6c9cf0eeb149f2142dedd55a17430e7831ea99/src/Microsoft.AspNetCore.Authentication.Cookies/CookieAuthenticationHandler.cs#L377-L379
                 var headers = httpContext.Response.Headers;
@@ -59,9 +68,9 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                 headers.Set("Expires", "Thu, 01 Jan 1970 00:00:00 GMT");
             }
 
-            if (_healthCheckOptions.ResponseWriter != null)
+            if (healthCheckOptions.ResponseWriter != null)
             {
-                _healthCheckOptions.ResponseWriter(httpContext, result);
+                healthCheckOptions.ResponseWriter(httpContext, result);
             }
         }
 
