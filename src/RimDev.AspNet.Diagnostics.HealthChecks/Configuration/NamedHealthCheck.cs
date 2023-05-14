@@ -5,11 +5,11 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
     public class NamedHealthCheck
     {
         public NamedHealthCheck(IHealthCheck healthCheck)
-            : this(healthCheck, name: null)
+            : this(name: null, healthCheck)
         {
         }
 
-        public NamedHealthCheck(IHealthCheck healthCheck, string? name)
+        public NamedHealthCheck(string? name, IHealthCheck healthCheck)
         {
             HealthCheck = healthCheck;
 

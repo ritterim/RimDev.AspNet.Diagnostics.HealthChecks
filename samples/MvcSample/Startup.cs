@@ -38,14 +38,19 @@ namespace MvcSample
                 )
                 .AddNamedChecks(() => new[]
                 {
-                    new NamedHealthCheck(new NoopHealthCheck(), "Noop health check"),
-                    new NamedHealthCheck(new FailingHealthCheck(), "Failing health check"),
-                    new NamedHealthCheck(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost")
+                    new NamedHealthCheck("Noop health check", new NoopHealthCheck()),
+                    new NamedHealthCheck("Failing health check", new FailingHealthCheck()),
+                    new NamedHealthCheck("Ping to localhost", new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)))
                 });
 
             LegacyHealthCheckRoutes
                 .MapHealthChecks("/health/noop")
                 .AddCheck<NoopHealthCheck>("Noop health check");
+
+            // Below example will throw due to reuse of route
+            // LegacyHealthCheckRoutes
+            //     .MapHealthChecks("health/noop") // Normalized to/health/noop - throws
+            //     .AddCheck<NoopHealthCheck>("Noop health check");
         }
     }
 

@@ -60,7 +60,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
                 throw new ArgumentNullException(nameof(healthCheck));
             }
 
-            return this.AddNamedCheck(new NamedHealthCheck(healthCheck, name));
+            return this.AddNamedCheck(new NamedHealthCheck(name, healthCheck));
         }
 
         public LegacyHealthCheckRouteConfiguration AddChecks(Func<IEnumerable<IHealthCheck>> factory)
