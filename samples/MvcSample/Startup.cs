@@ -31,11 +31,16 @@ namespace MvcSample
             LegacyHealthCheckRoutes
                 .MapDefaultHealthChecks() // /health
                 .AddCheck<SlowNoopHealthCheck>()
-                .AddChecks(() => new[]
+                .AddChecks(
+                    new NoopHealthCheck(),
+                    new FailingHealthCheck(),
+                    new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000))
+                )
+                .AddNamedChecks(() => new[]
                 {
-                    new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
-                    new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
-                    new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost")
+                    new NamedHealthCheck(new NoopHealthCheck(), "Noop health check"),
+                    new NamedHealthCheck(new FailingHealthCheck(), "Failing health check"),
+                    new NamedHealthCheck(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost")
                 });
 
             LegacyHealthCheckRoutes

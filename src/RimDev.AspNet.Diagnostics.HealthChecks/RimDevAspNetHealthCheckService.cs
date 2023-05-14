@@ -28,7 +28,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
 
         public async Task<HealthReport> CheckHealthAsync(
             // Func<HealthCheckRegistration, bool> predicate,
-            IEnumerable<HealthCheckWrapper> healthChecks,
+            IEnumerable<NamedHealthCheck> healthChecks,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var entries = new Dictionary<string, HealthReportEntry>(StringComparer.OrdinalIgnoreCase);
@@ -174,12 +174,12 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                 _healthCheckProcessingEnd(logger, duration.TotalMilliseconds, status, null);
             }
 
-            public static void HealthCheckBegin(ILogger logger, HealthCheckWrapper healthCheck)
+            public static void HealthCheckBegin(ILogger logger, NamedHealthCheck healthCheck)
             {
                 _healthCheckBegin(logger, healthCheck.Name, null);
             }
 
-            public static void HealthCheckEnd(ILogger logger, HealthCheckWrapper healthCheck, HealthReportEntry entry, TimeSpan duration)
+            public static void HealthCheckEnd(ILogger logger, NamedHealthCheck healthCheck, HealthReportEntry entry, TimeSpan duration)
             {
                 switch (entry.Status)
                 {
@@ -197,12 +197,12 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                 }
             }
 
-            public static void HealthCheckError(ILogger logger, HealthCheckWrapper healthCheck, Exception exception, TimeSpan duration)
+            public static void HealthCheckError(ILogger logger, NamedHealthCheck healthCheck, Exception exception, TimeSpan duration)
             {
                 _healthCheckError(logger, healthCheck.Name, duration.TotalMilliseconds, exception);
             }
 
-            public static void HealthCheckData(ILogger logger, HealthCheckWrapper healthCheck, HealthReportEntry entry)
+            public static void HealthCheckData(ILogger logger, NamedHealthCheck healthCheck, HealthReportEntry entry)
             {
                 if (entry.Data.Count > 0 && logger.IsEnabled(LogLevel.Debug))
                 {

@@ -2,14 +2,14 @@
 
 namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
 {
-    public class HealthCheckWrapper
+    public class NamedHealthCheck
     {
-        public HealthCheckWrapper(IHealthCheck healthCheck)
+        public NamedHealthCheck(IHealthCheck healthCheck)
             : this(healthCheck, name: null)
         {
         }
 
-        public HealthCheckWrapper(IHealthCheck healthCheck, string? name)
+        public NamedHealthCheck(IHealthCheck healthCheck, string? name)
         {
             HealthCheck = healthCheck;
 

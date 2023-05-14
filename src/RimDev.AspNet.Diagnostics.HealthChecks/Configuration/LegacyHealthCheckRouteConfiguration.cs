@@ -15,12 +15,12 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             };
 
-            this.CollectedHealthChecks = new List<Func<IEnumerable<HealthCheckWrapper>>>();
+            this.CollectedHealthChecks = new List<Func<IEnumerable<NamedHealthCheck>>>();
         }
 
         public HealthCheckOptions Options { get; private set; }
 
-        internal List<Func<IEnumerable<HealthCheckWrapper>>> CollectedHealthChecks { get; set; }
+        internal List<Func<IEnumerable<NamedHealthCheck>>> CollectedHealthChecks { get; set; }
 
         public LegacyHealthCheckRouteConfiguration WithOptions(HealthCheckOptions options)
         {
@@ -60,7 +60,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
                 throw new ArgumentNullException(nameof(healthCheck));
             }
 
-            return this.AddCheck(new HealthCheckWrapper(healthCheck, name));
+            return this.AddNamedCheck(new NamedHealthCheck(healthCheck, name));
         }
 
         public LegacyHealthCheckRouteConfiguration AddChecks(Func<IEnumerable<IHealthCheck>> factory)
@@ -71,13 +71,13 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
             }
 
             var map = () => factory()
-                .Select(healthCheck => new HealthCheckWrapper(healthCheck))
+                .Select(healthCheck => new NamedHealthCheck(healthCheck))
                 .ToArray();
 
-            return this.AddChecks(map);
+            return this.AddNamedChecks(map);
         }
 
-        public LegacyHealthCheckRouteConfiguration AddChecks(Func<IEnumerable<HealthCheckWrapper>> factory)
+        public LegacyHealthCheckRouteConfiguration AddNamedChecks(Func<IEnumerable<NamedHealthCheck>> factory)
         {
             if (factory == null)
             {
@@ -104,22 +104,22 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
             return this;
         }
 
-        public LegacyHealthCheckRouteConfiguration AddChecks(params HealthCheckWrapper[] healthChecks)
+        public LegacyHealthCheckRouteConfiguration AddNamedChecks(params NamedHealthCheck[] healthChecks)
         {
             if (healthChecks == null)
             {
                 throw new ArgumentNullException(nameof(healthChecks));
             }
 
-            foreach (HealthCheckWrapper healthCheck in healthChecks)
+            foreach (NamedHealthCheck healthCheck in healthChecks)
             {
-                this.AddCheck(healthCheck);
+                this.AddNamedCheck(healthCheck);
             }
 
             return this;
         }
 
-        private LegacyHealthCheckRouteConfiguration AddCheck(HealthCheckWrapper healthCheck)
+        private LegacyHealthCheckRouteConfiguration AddNamedCheck(NamedHealthCheck healthCheck)
         {
             if (healthCheck == null)
             {
@@ -129,7 +129,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
             return this.AddCheck(() => healthCheck);
         }
 
-        private LegacyHealthCheckRouteConfiguration AddCheck(Func<HealthCheckWrapper> factory)
+        private LegacyHealthCheckRouteConfiguration AddCheck(Func<NamedHealthCheck> factory)
         {
             if (factory == null)
             {
