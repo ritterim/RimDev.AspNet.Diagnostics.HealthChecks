@@ -11,8 +11,7 @@ namespace MvcSample
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.IgnoreRoute("health");
-            routes.IgnoreRoute("health/{*rest}");
+            routes.IgnoreHealthCheckRoutes();
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 

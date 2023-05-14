@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\RouteCollectionExtensions.cs" />
     <Compile Include="HealthCheckConfiguration.cs" />
     <Compile Include="HealthCheckHttpHandler.cs" />
     <Compile Include="HealthCheckLogScope.cs" />
@@ -66,6 +67,9 @@
     <None Include="RimDev.AspNet.Diagnostics.HealthChecks.nuspec" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc">
+      <Version>5.2.7</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks">
       <Version>3.1.20</Version>
     </PackageReference>
