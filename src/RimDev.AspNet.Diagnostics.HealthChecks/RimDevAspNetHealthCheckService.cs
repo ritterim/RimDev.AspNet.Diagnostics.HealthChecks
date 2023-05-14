@@ -131,7 +131,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                 EventIds.HealthCheckProcessingEnd,
                 "Health check processing completed after {ElapsedMilliseconds}ms with combined status {HealthStatus}");
 
-            private static readonly Action<ILogger, string, Exception?> _healthCheckBegin = LoggerMessage.Define<string>(
+            private static readonly Action<ILogger, string?, Exception?> _healthCheckBegin = LoggerMessage.Define<string?>(
                 LogLevel.Debug,
                 EventIds.HealthCheckBegin,
                 "Running health check {HealthCheckName}");
@@ -139,22 +139,22 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
             // These are separate so they can have different log levels
             private static readonly string HealthCheckEndText = "Health check {HealthCheckName} completed after {ElapsedMilliseconds}ms with status {HealthStatus} and '{HealthCheckDescription}'";
 
-            private static readonly Action<ILogger, string, double, HealthStatus, string, Exception?> _healthCheckEndHealthy = LoggerMessage.Define<string, double, HealthStatus, string>(
+            private static readonly Action<ILogger, string, double, HealthStatus, string?, Exception?> _healthCheckEndHealthy = LoggerMessage.Define<string, double, HealthStatus, string?>(
                 LogLevel.Debug,
                 EventIds.HealthCheckEnd,
                 HealthCheckEndText);
 
-            private static readonly Action<ILogger, string, double, HealthStatus, string, Exception?> _healthCheckEndDegraded = LoggerMessage.Define<string, double, HealthStatus, string>(
+            private static readonly Action<ILogger, string, double, HealthStatus, string?, Exception?> _healthCheckEndDegraded = LoggerMessage.Define<string, double, HealthStatus, string?>(
                 LogLevel.Warning,
                 EventIds.HealthCheckEnd,
                 HealthCheckEndText);
 
-            private static readonly Action<ILogger, string, double, HealthStatus, string, Exception?> _healthCheckEndUnhealthy = LoggerMessage.Define<string, double, HealthStatus, string>(
+            private static readonly Action<ILogger, string, double, HealthStatus, string?, Exception?> _healthCheckEndUnhealthy = LoggerMessage.Define<string, double, HealthStatus, string?>(
                 LogLevel.Error,
                 EventIds.HealthCheckEnd,
                 HealthCheckEndText);
 
-            private static readonly Action<ILogger, string, double, HealthStatus, string, Exception?> _healthCheckEndFailed = LoggerMessage.Define<string, double, HealthStatus, string>(
+            private static readonly Action<ILogger, string, double, HealthStatus, string?, Exception?> _healthCheckEndFailed = LoggerMessage.Define<string, double, HealthStatus, string?>(
                 LogLevel.Error,
                 EventIds.HealthCheckEnd,
                 HealthCheckEndText);
