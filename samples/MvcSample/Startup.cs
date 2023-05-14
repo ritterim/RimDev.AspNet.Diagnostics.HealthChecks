@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Owin;
 using RimDev.AspNet.Diagnostics.HealthChecks;
+using RimDev.AspNet.Diagnostics.HealthChecks.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,24 +12,35 @@ namespace MvcSample
     {
         public void Configuration(IAppBuilder app)
         {
-            LegacyHealthCheckConfiguration.UseHealthChecks(
-                "/health/plain",
-                new HealthCheckOptions(),
-                new FailingHealthCheck()
-            );
+            LegacyHealthCheckRoutes
+                .MapHealthChecks("/health/plain")
+                .WithOptions(new HealthCheckOptions()) // Plain response writer
+                .WithOptions(options => options.AllowCachingResponses = false)
+                .AddCheck<FailingHealthCheck>()
+                .AddCheck<FailingHealthCheck>("Failing health check")
+                .AddCheck(new FailingHealthCheck())
+                .AddCheck(new FailingHealthCheck(), "Failing health check");
 
-            LegacyHealthCheckConfiguration.UseHealthChecks("/health", () => new[]
-            {
-                new HealthCheckWrapper(new SlowNoopHealthCheck()),
-                new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
-                new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
-                new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost")
-            });
+            LegacyHealthCheckRoutes
+                .MapHealthChecks("/health/plain-ui")
+                .AddCheck<FailingHealthCheck>()
+                .AddCheck<FailingHealthCheck>("Failing health check")
+                .AddCheck(new FailingHealthCheck())
+                .AddCheck(new FailingHealthCheck(), "Failing health check");
 
-            LegacyHealthCheckConfiguration.UseHealthChecks("/health/noop", () => new[]
-            {
-                new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
-            });
+            LegacyHealthCheckRoutes
+                .MapDefaultHealthChecks() // /health
+                .AddCheck<SlowNoopHealthCheck>()
+                .AddChecks(() => new[]
+                {
+                    new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
+                    new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
+                    new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost")
+                });
+
+            LegacyHealthCheckRoutes
+                .MapHealthChecks("/health/noop")
+                .AddCheck<NoopHealthCheck>("Noop health check");
         }
     }
 
