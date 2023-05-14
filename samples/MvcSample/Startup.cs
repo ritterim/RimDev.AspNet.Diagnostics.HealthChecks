@@ -4,7 +4,6 @@ using Owin;
 using RimDev.AspNet.Diagnostics.HealthChecks;
 using System.Threading;
 using System.Threading.Tasks;
-using RimDev.AspNet.Diagnostics.HealthChecks.UI;
 
 namespace MvcSample
 {
@@ -12,32 +11,24 @@ namespace MvcSample
     {
         public void Configuration(IAppBuilder app)
         {
-            // app.UseHealthChecks(
-            //     "/_health",
-            //     new NoopHealthCheck(),
-            //     //new SlowNoopHealthCheck(),
-            //     //new SqlServerHealthCheck(
-            //     //    @"Data Source=(LocalDB)\v13.0;Integrated Security=True;Initial Catalog=master",
-            //     //    "select 'a'"),
-            //     new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)));
-            // 
-            // // Sample with named checks for Health Check UI project
-            // app.UseHealthChecks(
-            //     "/_health_ui",
-            //     new HealthCheckOptions
-            //     {
-            //         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            //     },
-            //     new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
-            //     new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
-            //     new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost"));
+            LegacyHealthCheckConfiguration.UseHealthChecks(
+                "/health/plain",
+                new HealthCheckOptions(),
+                new FailingHealthCheck()
+            );
 
-            LegacyHealthCheckConfiguration.Current.UseHealthChecks(
+            LegacyHealthCheckConfiguration.UseHealthChecks("/health", () => new[]
+            {
                 new HealthCheckWrapper(new SlowNoopHealthCheck()),
                 new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
                 new HealthCheckWrapper(new FailingHealthCheck(), "Failing health check"),
                 new HealthCheckWrapper(new PingHealthCheck(new PingHealthCheckOptions().AddHost("localhost", 1000)), "Ping to localhost")
-            );
+            });
+
+            LegacyHealthCheckConfiguration.UseHealthChecks("/health/noop", () => new[]
+            {
+                new HealthCheckWrapper(new NoopHealthCheck(), "Noop health check"),
+            });
         }
     }
 
