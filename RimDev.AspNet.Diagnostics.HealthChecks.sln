@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{CDBA3B59-4C15-4C3D-8C94-481C1BC997D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimDev.AspNet.Diagnostics.HealthChecks", "src\RimDev.AspNet.Diagnostics.HealthChecks\RimDev.AspNet.Diagnostics.HealthChecks.csproj", "{5BA7DA7C-BF46-4064-AB4F-50F4165E70F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimDev.AspNet.Diagnostics.HealthChecks", "src\RimDev.AspNet.Diagnostics.HealthChecks\RimDev.AspNet.Diagnostics.HealthChecks.csproj", "{5BA7DA7C-BF46-4064-AB4F-50F4165E70F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcSample", "samples\MvcSample\MvcSample.csproj", "{E15E45A5-9CF2-4C95-ABCE-3E21C558BF8C}"
 EndProject
