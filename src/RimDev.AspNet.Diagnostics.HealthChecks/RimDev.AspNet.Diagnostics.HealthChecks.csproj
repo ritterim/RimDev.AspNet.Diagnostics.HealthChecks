@@ -5,24 +5,34 @@
 	<Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+g
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageType>snupkg</SymbolPackageType>
+    <PackageProjectUrl>https://github.com/SellerCloudTeam/Fork.RimDev.AspNet.Diagnostics.HealthChecks</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SellerCloudTeam/Fork.RimDev.AspNet.Diagnostics.HealthChecks</RepositoryUrl>
   </PropertyGroup>
+
   <PropertyGroup>
 	<Version>7.0.5</Version> <!-- Should match the version of Microsoft.Extensions.Diagnostics.HealthChecks -->
     <PackageId>SellerCloud.$(AssemblyName)</PackageId>
     <Description>ASP.NET full framework implementation of ASP.NET Core health checks</Description>
   </PropertyGroup>
+
   <ItemGroup>
 	<Reference Include="System.Web" />
 
 	<PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.5" /> <!-- Should match the NuGet <Version> tag above -->
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+
+	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 </Project>
