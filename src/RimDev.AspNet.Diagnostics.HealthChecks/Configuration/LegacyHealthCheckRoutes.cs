@@ -11,7 +11,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
         private static readonly ConcurrentDictionary<string, LegacyHealthCheckRouteConfiguration> RouteConfigs
             = new ConcurrentDictionary<string, LegacyHealthCheckRouteConfiguration>(StringComparer.InvariantCultureIgnoreCase);
 
-        public static LegacyHealthCheckRouteConfiguration TryGetConfiguration(string route)
+        public static LegacyHealthCheckRouteConfiguration? TryGetConfiguration(string route, string? virtualDirectory)
         {
             if (route == null)
             {
@@ -23,9 +23,21 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
                 throw new ArgumentException($"{nameof(route)} cannot be empty or whitespace!", nameof(route));
             }
 
-            RouteConfigs.TryGetValue(route, out var config);
+            if (RouteConfigs.TryGetValue(route, out var config))
+            {
+                return config;
+            }
 
-            return config;
+            string? routeWithoutVirtualDirectory = virtualDirectory != null && route.StartsWith(virtualDirectory, StringComparison.InvariantCultureIgnoreCase)
+                ? route.Substring(virtualDirectory.Length)
+                : null;
+
+            if (routeWithoutVirtualDirectory != null && RouteConfigs.TryGetValue(routeWithoutVirtualDirectory, out var configWithoutVirtualDirectory))
+            {
+                return configWithoutVirtualDirectory;
+            }
+
+            return null;
         }
 
         public static LegacyHealthCheckRouteConfiguration MapDefaultHealthChecks()

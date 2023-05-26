@@ -30,10 +30,13 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks
                 throw new ArgumentNullException(nameof(httpContext));
             }
 
+            // Used to determine if the app is running in a virtual directory in IIS
+            var virtualDirectory = httpContext.Request.ApplicationPath?.TrimEnd('/');
+
             // Resolve the health check configuration
             var route = httpContext.Request.Url.LocalPath;
 
-            var config = LegacyHealthCheckRoutes.TryGetConfiguration(route);
+            var config = LegacyHealthCheckRoutes.TryGetConfiguration(route, virtualDirectory);
 
             if (config == null)
             {
