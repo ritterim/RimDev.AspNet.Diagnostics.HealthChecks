@@ -28,7 +28,7 @@ namespace RimDev.AspNet.Diagnostics.HealthChecks.Configuration
                 return config;
             }
 
-            string? routeWithoutVirtualDirectory = virtualDirectory != null && route.StartsWith(virtualDirectory, StringComparison.InvariantCultureIgnoreCase)
+            string? routeWithoutVirtualDirectory = virtualDirectory != null && !string.IsNullOrWhiteSpace(virtualDirectory) && route.StartsWith(virtualDirectory, StringComparison.InvariantCultureIgnoreCase)
                 ? route.Substring(virtualDirectory.Length)
                 : null;
 

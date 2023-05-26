@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<Version>7.0.5</Version> <!-- Should match the version of Microsoft.Extensions.Diagnostics.HealthChecks -->
+	<Version>7.0.5.1</Version> <!-- Should match the version of Microsoft.Extensions.Diagnostics.HealthChecks -->
     <PackageId>SellerCloud.$(AssemblyName)</PackageId>
     <Description>ASP.NET full framework implementation of ASP.NET Core health checks</Description>
   </PropertyGroup>
